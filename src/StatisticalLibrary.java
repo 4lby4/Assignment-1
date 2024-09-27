@@ -2,70 +2,127 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Library of Statistical Calculations
- * Includes functions for finding the minimum value, maximum value, median value and the mean
+ * Applied rules from Google Java Style Guide:
+ * 3.4.1 Exactly one top-level class declaration
+ * 4.1.1 Use of optional braces
+ * 4.1.2 Nonempty blocks: K & R style
+ * 4.2 Block indentation: +2 spaces
+ * 4.3 One statement per line
+ * 4.6.1 Vertical Whitespace
+ * 4.6.2 Horizontal whitespace
+ */
+
+/**
+ * Library of Statistical Calculations.
+ *
+ * This class provides methods for calculating statistical values such as mean, median, minimum, and maximum.
+ *
+ * @author Alby Babu
+ * @version 1.0
  */
 public class StatisticalLibrary {
 
-    public static double m1(ArrayList<Double> x, double min, boolean cutOff){
-        double m = 0;
+    /**
+     * Calculates the mean of the given list, optionally excluding values below a certain cutoff.
+     *
+     * @param values the list of values
+     * @param cutoff the minimum value to include (optional)
+     * @param excludeBelowCutoff whether to exclude values below the cutoff
+     * @return the mean of the values
+     */
+    public static double calculateMean(ArrayList<Double> values, double cutoff, boolean excludeBelowCutoff) {
+        double sum = 0;
         int count = 0;
-        for(double d: x){
-            if(cutOff) {
-                if(d>= min) {
-                    m += d;
+
+        for (double value : values) { //Iterate over the list of values.
+            if (excludeBelowCutoff) {
+                if (value >= cutoff) {
+                    sum += value;
                     count++;
                 }
-            }
-            else{
-                m += d;
+            } else {
+                sum += value;
                 count++;
             }
         }
-        return m/count;
+        return sum / count;
     }
 
-    public static double m2(ArrayList<Double> x){
-        double m = 0;
-        if(x.size() %2 == 1){
-            m = x.size()/2;
-            m = x.get((int)m);
-        }
-        else{
-            m = ( x.get((int)((x.size())/2)-1) + x.get((int)(x.size()/2)) ) / 2;
-        }
+    /**
+     * Calculates the median of the given list.
+     *
+     * @param values the list of values
+     * @return the median of the values
+     */
+    public static double calculateMedian(ArrayList<Double> values) {
 
-        return m;
+        Collections.sort(values);//Sort the list of values in ascending order.
+        int size = values.size(); //Get the size of the list.
+        if (size % 2 == 1) { //Check if the list has an odd number of elements.
+
+            return values.get(size / 2);
+        } else {
+
+            int mid1 = size / 2 - 1;
+            int mid2 = size / 2;
+
+            return (values.get(mid1) + values.get(mid2)) / 2.0;
+        }
     }
 
-    public static double m3(ArrayList<Double> x){
-        double m = x.get(0);
-        for(double d : x){
-            if(d<m){
-                m=d;
+    /**
+     * Finds the minimum value in the given list.
+     *
+     * @param values the list of values
+     * @return the minimum value
+     */
+    public static double findMin(ArrayList<Double> values) {
+        double min = values.get(0); //Initialize the minimum value to the first element in the list.
+
+        for (double value : values) {
+
+            if (value < min) {
+                min = value;
             }
         }
-        return m;
+
+        return min;
     }
 
-    public static double m4(ArrayList<Double> x){
-        double  m = x.get(0);
-        for(double d : x){
-            if(d>m){
-                m=d;
+    /**
+     * Finds the maximum value in the given list.
+     *
+     * @param values the list of values
+     * @return the maximum value
+     */
+    public static double findMax(ArrayList<Double> values) {
+
+        double max = values.get(0); //Initialize the maximum value to the first element in the list.
+
+        for (double value : values) {
+
+            if (value > max) {
+                max = value;
             }
         }
-        return m;
+
+        return max;
     }
 
+    /**
+     * Main method for testing the statistical calculations.
+     *
+     * @param args command line arguments
+     */
     public static void main(String[] args) {
-        // Use code here to understand what each method does to help with your code improvement
-        ArrayList<Double> data = new ArrayList<>();
-        Collections.addAll(data,25.5, 29.4, 36.7, 43.1, 57.9, 88.3, 99.9, 100.0 );
 
-        System.out.println("m1: " + m1(data, 0, true));
-        System.out.println("m2: " + m2(data));
-        System.out.println("m3: " + m3(data));
-        System.out.println("m4: " + m4(data));
+        ArrayList<Double> data = new ArrayList<>(); //Create a list of values
+
+        Collections.addAll(data, 25.5, 29.4, 36.7, 43.1, 57.9, 88.3, 99.9, 100.0);
+
+        System.out.println("Mean: " + calculateMean(data, 0, true)); //Calculate and print the mean, median, minimum, and maximum values.
+        System.out.println("Median: " + calculateMedian(data));
+        System.out.println("Min: " + findMin(data));
+        System.out.println("Max: " + findMax(data));
     }
 }
